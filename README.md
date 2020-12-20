@@ -1,1 +1,19 @@
-# Star <img height="25" alt="portfolio_view" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Pi-symbol.svg/794px-Pi-symbol.svg.png">
+# start_pi
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
