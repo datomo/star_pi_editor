@@ -18,14 +18,13 @@ async function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: (process.env
-          .ELECTRON_NODE_INTEGRATION as unknown) as boolean
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
+    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
@@ -56,7 +55,11 @@ app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
-      await installExtension(VUEJS_DEVTOOLS)
+      // await installExtension(VUEJS_DEVTOOLS)
+      await installExtension({
+        id: 'ljjemllljcmogpfapbkkighbhhppjdbg',
+        electron: '>=1.2.1'
+      })
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
