@@ -13,8 +13,8 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -57,6 +57,7 @@ app.on('ready', async () => {
     try {
       // await installExtension(VUEJS_DEVTOOLS)
       await installExtension({
+        //id: 'ljjemllljcmogpfapbkkighbhhppjdbg',
         id: 'ljjemllljcmogpfapbkkighbhhppjdbg',
         electron: '>=1.2.1'
       })
