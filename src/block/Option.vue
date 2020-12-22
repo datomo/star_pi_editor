@@ -1,7 +1,15 @@
 <template>
   <div class="option">
     <div class="key">{{ name }}:</div>
-    <div class="values" :class="{'selected': option == value}" v-for="value in options" :key="value" @click="setOption({id, name, value})">{{ value }}</div>
+    <div
+      class="values"
+      :class="{ selected: option == value }"
+      v-for="value in options"
+      :key="value"
+      @click="setOption({ id, name, value })"
+    >
+      {{ value }}
+    </div>
   </div>
 </template>
 
@@ -14,15 +22,15 @@ export default {
   setup(props) {
     const options = useStore().getters.options(props.name);
 
-    const {setOption} = useActions(["setOption"])
+    const { setOption } = useActions(["setOption"]);
 
     return { options, setOption };
   },
   computed: {
     option() {
-      return this.$store.getters.option({id: this.id, name: this.name});
-    }
-  }
+      return this.$store.getters.option({ id: this.id, name: this.name });
+    },
+  },
 };
 </script>
 
@@ -32,7 +40,6 @@ export default {
   padding: 0.2rem;
 
   * {
-    padding: 0.4rem;
     margin: 0 0.2rem;
   }
 }
