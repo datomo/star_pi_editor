@@ -7,6 +7,7 @@ export const useGetters = (arr) => {
     return Object.fromEntries(keypair);
 } 
 
+
 export const useActions = arr => {
     const store = useStore();
     const keypair = arr.map(a => [a, payload => store.dispatch(a, payload)]);

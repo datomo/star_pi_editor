@@ -8,6 +8,5 @@ export function useRoot() {
 
 export function addBlock(store, parent) {
 
-    console.log("hi")
     store.commit("addBlock", {parent});
 }

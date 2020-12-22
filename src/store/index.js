@@ -40,6 +40,7 @@ export default createStore({
     },
     setOption(state, {id, name, value}) {
       state.blocks[id].options[name] = value;
+      console.log(state.blocks[id].options[name])
     },
     clearBlocks(state) {
       state.root = [];
@@ -57,9 +58,9 @@ export default createStore({
       if (parent == null) {
         commit("addRoot", id);
       }
-      console.log(state.blocks)
     },
     setOption({commit}, payload) {
+      console.log("hi")
       commit("setOption", payload)
     },
     clear({commit}) {
@@ -72,7 +73,6 @@ export default createStore({
       return state.root.map((id) => state.blocks[id]);
     },
     getBlock: (state) => (id) => {
-      console.log(id)
       return state.blocks[id];
     },
     options: (state) => (name) => {

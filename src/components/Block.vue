@@ -22,7 +22,7 @@ export default {
   },
   setup(props) {
     const block = useStore().getters.getBlock(props.id);
-    console.log(block)
+
     return { block };
   },
 };

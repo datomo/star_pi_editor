@@ -1,22 +1,28 @@
 <template>
   <div class="option">
     <div class="key">{{ name }}:</div>
-    <div class="values" :class="{'selected': option == value}" v-for="value in options" :key="value">{{ value }}</div>
+    <div class="values" :class="{'selected': option == value}" v-for="value in options" :key="value" @click="setOption({id, name, value})">{{ value }}</div>
   </div>
 </template>
 
 <script>
 import { useStore } from "vuex";
+import { useActions } from "@/helpers/store";
 
 export default {
   props: ["name", "id"],
   setup(props) {
     const options = useStore().getters.options(props.name);
 
-    const option = useStore().getters.option({id: props.id, name: props.name});
-    console.log(option)
-    return { options, option };
+    const {setOption} = useActions(["setOption"])
+
+    return { options, setOption };
   },
+  computed: {
+    option() {
+      return this.$store.getters.option({id: this.id, name: this.name});
+    }
+  }
 };
 </script>
 
