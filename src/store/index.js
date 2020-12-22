@@ -30,13 +30,16 @@ export default createStore({
       block.options = {};
 
       Object.entries(state.options).forEach(([key,value]) => {
-        block.options[key] = value;
+        block.options[key] = value[0];
       });
 
       state.blocks[id] = block;
     },
     resetId(state) {
       state.id = 0;
+    },
+    setOption(state, {id, name, value}) {
+      state.blocks[id].options[name] = value;
     },
     clearBlocks(state) {
       state.root = [];
@@ -45,7 +48,7 @@ export default createStore({
     }
   },
   actions: {
-    addBlock({ state, commit }, { parent: parent }) {
+    addBlock({ state, commit }, { parent }) {
       const id = state.id;
       commit("incrementId");
 
@@ -55,6 +58,9 @@ export default createStore({
         commit("addRoot", id);
       }
       console.log(state.blocks)
+    },
+    setOption({commit}, payload) {
+      commit("setOption", payload)
     },
     clear({commit}) {
       commit("resetId");
@@ -68,6 +74,12 @@ export default createStore({
     getBlock: (state) => (id) => {
       console.log(id)
       return state.blocks[id];
+    },
+    options: (state) => (name) => {
+      return state.options[name];
+    },
+    option: (state) => ({id, name}) => {
+      return state.blocks[id].options[name];
     }
   },
   modules: {},

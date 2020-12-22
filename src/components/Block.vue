@@ -2,8 +2,8 @@
   <div class="block">
     <p>id: {{ id }}</p>
     <Pin />
-    <div class="options" v-for="(value, key) in block.options" :key="key">
-      <Option :key="key" :value="value" />
+    <div class="options" >
+      <Option :id="id" :key="key" :name="key" v-for="(value, key) in block.options" />
     </div>
   </div>
 </template>
@@ -21,11 +21,8 @@ export default {
     Option,
   },
   setup(props) {
-    //const {getBlock} = useGetters(["getBlock"]);
-    console.log(props.id);
     const block = useStore().getters.getBlock(props.id);
-    console.log(block);
-
+    console.log(block)
     return { block };
   },
 };
