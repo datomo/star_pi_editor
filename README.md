@@ -2,5 +2,5 @@
 
 Hello travelor, starpi is a libary with the goal to allow non-technical people to access the possibilites of the raspberry pi.
 Starpi consist of two independent parts:
-1. graphical logic interface 
-2. logical interpreter on raspberry pi 
+- graphical logic interface (javascript)
+- logical interpreter on raspberry pi (python)
