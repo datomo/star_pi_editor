@@ -1,5 +1,6 @@
 <template>
-  <div class="pins">
+  <div class="pin-toggle btn" @click="toggleAll">{{ pinsVisible?"Hide Pins":"Show Pins" }}</div>
+  <div class="pins" v-if="pinsVisible">
       <div @click="toggle(pin)" class="pin" v-for="pin in 40" :key="pin" :class="{'selected': pins.includes(pin), 'blocked': blocked.includes(pin)}">
         {{pin}}
       </div>
@@ -12,6 +13,7 @@ export default {
     setup() {
         const pins = ref([]);
         const blocked = [1, 2, 4, 6, 9, 14, 17, 20, 25, 27, 28, 30, 34, 39]
+        const pinsVisible = ref(true)
 
         const toggle = (pin) => {
             if(pins.value.includes(pin)){
@@ -20,9 +22,10 @@ export default {
                 pins.value.push(pin);
             }
         }
+        const toggleAll = () => {pinsVisible.value = !pinsVisible.value}
 
         return {
-            pins, blocked, toggle
+            pins, blocked, pinsVisible, toggle, toggleAll
         }
     }
 }

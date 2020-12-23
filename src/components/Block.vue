@@ -7,10 +7,8 @@
     </div>
     <div class="children">
       <Block v-for="block in children" :key="block" :id="block.id" />
-
-      <p>{{children}}}</p>
-      <div @click="addBlock(id)" class="btn">Add Button</div>
     </div>
+    <div @click="addBlock(id)" class="btn">Add Button</div>
   </div>
 </template>
 
@@ -54,5 +52,9 @@ export default {
   padding: 0.4rem;
   margin: 0.4rem;
   border-radius: 2px;
+}
+
+.children {
+  border: 2px solid black;
 }
 </style>
