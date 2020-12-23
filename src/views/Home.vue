@@ -4,7 +4,7 @@
       <Block v-for="block in root" :id="block.id" :key="block.id" />
     </div>
     <div class="controls">
-      <div @click="addBlock" class="btn">Add Block</div>
+      <div @click="addBlock(null)" class="btn">Add Block</div>
       <div @click="clear" class="btn">Clear</div>
     </div>
   </div>

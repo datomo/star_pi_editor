@@ -5,6 +5,7 @@ export default createStore({
     root: [],
     //blocks
     blocks: {},
+    children: {},
     default: {
       id: null,
       parent: null,
@@ -34,13 +35,20 @@ export default createStore({
       });
 
       state.blocks[id] = block;
+      state.children[id] = [];
+      console.log(state)
+
+      console.log(state.children[id])
+    },
+    addChild(state, {parent, id}) {
+      console.log(state.children[parent])
+      state.children[parent] += id;
     },
     resetId(state) {
       state.id = 0;
     },
     setOption(state, {id, name, value}) {
       state.blocks[id].options[name] = value;
-      console.log(state.blocks[id].options[name])
     },
     clearBlocks(state) {
       state.root = [];
@@ -49,18 +57,22 @@ export default createStore({
     }
   },
   actions: {
-    addBlock({ state, commit }, { parent }) {
+    async addBlock({ state, commit }, parent) {
       const id = state.id;
+      console.log(parent)
       commit("incrementId");
 
-      commit("addBlock", id);
+      await commit("addBlock", id);
+
+      console.log(state.children[parent])
 
       if (parent == null) {
         commit("addRoot", id);
+      }else {
+        commit("addChild", {parent, id})
       }
     },
     setOption({commit}, payload) {
-      console.log("hi")
       commit("setOption", payload)
     },
     clear({commit}) {
@@ -74,6 +86,9 @@ export default createStore({
     },
     getBlock: (state) => (id) => {
       return state.blocks[id];
+    },
+    getChildren: (state) => (id) => {
+      return state.children[id].map((id) => state.blocks[id]);
     },
     options: (state) => (name) => {
       return state.options[name];

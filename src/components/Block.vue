@@ -5,6 +5,12 @@
     <div class="options" >
       <Option :id="id" :key="key" :name="key" v-for="(value, key) in block.options" />
     </div>
+    <div class="children">
+      <Block v-for="block in children" :key="block" :id="block.id" />
+
+      <p>{{children}}}</p>
+      <div @click="addBlock(id)" class="btn">Add Button</div>
+    </div>
   </div>
 </template>
 
@@ -13,6 +19,8 @@ import Pin from "@/block/Pin";
 import Option from "@/block/Option";
 import { useStore } from "vuex";
 //import { useGetters } from "@/helpers/store";
+import { useActions } from "@/helpers/store";
+import {ref} from "vue";
 
 export default {
   props: ["id"],
@@ -23,7 +31,11 @@ export default {
   setup(props) {
     const block = useStore().getters.getBlock(props.id);
 
-    return { block };
+    const children = ref(useStore().getters.getChildren(props.id));
+
+    const {addBlock} = useActions(["addBlock"]);
+
+    return { block, children, addBlock };
   },
 };
 </script>
