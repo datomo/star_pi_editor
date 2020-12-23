@@ -20,7 +20,7 @@ import Option from "@/block/Option";
 import { useStore } from "vuex";
 //import { useGetters } from "@/helpers/store";
 import { useActions } from "@/helpers/store";
-import {ref} from "vue";
+import { computed } from "vue";
 
 export default {
   props: ["id"],
@@ -28,14 +28,21 @@ export default {
     Pin,
     Option,
   },
+  watch: {
+    children(newChild) {
+      console.log("child changed")
+      console.log(newChild)
+    }
+  },
   setup(props) {
-    const block = useStore().getters.getBlock(props.id);
+    const store = useStore()
+    const block = store.getters.getBlock(props.id);
 
-    const children = ref(useStore().getters.getChildren(props.id));
+    const children = computed(() => store.getters.getChildren(props.id));
 
     const {addBlock} = useActions(["addBlock"]);
 
-    return { block, children, addBlock };
+    return { block, children, addBlock};
   },
 };
 </script>

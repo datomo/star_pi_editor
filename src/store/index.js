@@ -41,8 +41,8 @@ export default createStore({
       console.log(state.children[id])
     },
     addChild(state, {parent, id}) {
-      console.log(state.children[parent])
-      state.children[parent] += id;
+      console.log("adding child")
+      state.children[parent].push(id);
     },
     resetId(state) {
       state.id = 0;
@@ -59,12 +59,10 @@ export default createStore({
   actions: {
     async addBlock({ state, commit }, parent) {
       const id = state.id;
-      console.log(parent)
       commit("incrementId");
 
       await commit("addBlock", id);
 
-      console.log(state.children[parent])
 
       if (parent == null) {
         commit("addRoot", id);
@@ -95,6 +93,9 @@ export default createStore({
     },
     option: (state) => ({id, name}) => {
       return state.blocks[id].options[name];
+    },
+    allChildren: (state) => {
+      return state.children;
     }
   },
   modules: {},
