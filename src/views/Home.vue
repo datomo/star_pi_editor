@@ -5,6 +5,7 @@
     </div>
     <div class="controls">
       <div @click="addBlock(null)" class="btn">Add Block</div>
+      <div @click="saveConfig" class="btn">Save Config</div>
       <div @click="clear" class="btn">Clear</div>
     </div>
   </div>
@@ -21,10 +22,10 @@ export default {
   },
   setup() {
     const { root } = useGetters(["root"]);
-    const { addBlock, clear } = useActions(["addBlock", "clear"])
+    const { addBlock, clear, saveConfig } = useActions(["addBlock", "clear", "saveConfig"])
 
     return {
-      addBlock, clear, root
+      addBlock, clear, root, saveConfig
     }
   },
 }

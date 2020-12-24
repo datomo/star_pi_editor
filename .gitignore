@@ -24,3 +24,7 @@ pnpm-debug.log*
 
 #Electron-builder output
 /dist_electron
+
+
+#star_pi output
+*.json

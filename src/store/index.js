@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import * as fs from "fs";
 
 export default createStore({
   state: {
@@ -76,6 +77,35 @@ export default createStore({
     clear({commit}) {
       commit("resetId");
       commit("clearBlocks");
+    },
+    async saveConfig({state, dispatch}) {
+      const result = {}
+      for(const id of state.root){
+        result[id] = await dispatch("parseBlock", id)
+
+      }
+      dispatch("saveFile", {fileName: "test.json", content: result});
+    },
+    async parseBlock({state, dispatch}, id){
+      const result = JSON.parse(JSON.stringify(state.blocks[id]));
+
+      result["children"] = {};
+      console.log(state.children[id])
+      // no need to check if exist as it has to be creation on initation
+      for(const child of state.children[id]){
+        result["children"][child] = await dispatch("parseBlock", child);
+      }
+
+      return result;
+    },
+    saveFile(_, {fileName, content}){
+      fs.writeFile(fileName, JSON.stringify(content), (err) => {
+        if(err){
+          console.log(err);
+        }else {
+          console.log("saving successfull")
+        }
+      })
     }
   },
   getters: {
@@ -100,3 +130,4 @@ export default createStore({
   },
   modules: {},
 });
+
