@@ -3,12 +3,6 @@
     <div class="flow">
       <Block v-for="block in root" :id="block.id" :key="block.id"/>
     </div>
-    <div class="arsenal">
-      <div v-for="type in types" class="type" :key="type">
-        <h2 class="title">{{ type + "s" }}</h2>
-        <Adder/>
-      </div>
-    </div>
     <div class="controls">
       <div @click="addBlock(null)" class="btn">Add Block</div>
       <div @click="saveConfig" class="btn">Save Config</div>
@@ -19,49 +13,29 @@
 
 <script>
 import {useGetters, useActions} from "@/helpers/store";
-import Block from "@/components/Block";
-import Adder from "@/components/Adder";
+import Block from "@/components/Description";
 
 export default {
   name: 'Home',
   components: {
     Block,
-    Adder
   },
   setup() {
-    const {root, types} = useGetters(["root", "types"]);
+    const {root} = useGetters(["root", "types"]);
     const {addBlock, clear, saveConfig} = useActions(["addBlock", "clear", "saveConfig"])
 
     return {
-      addBlock, clear, root, types, saveConfig
+      addBlock, clear, root, saveConfig
     }
   },
 }
 </script>
 
 <style lang="scss">
-.arsenal {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  width: 100%;
 
-  * {
-    flex-grow: 1;
-  }
-  .title {
-    text-align: center;
-    background: #42b983;
-    color: black;
-    padding: 0.2rem;
-    margin: 0.2rem;
-    border-radius: 4px;
-    text-transform: capitalize;
-  }
-}
 
 .home {
-  height: 100vh;
+  height: 100%;
   display: grid;
   grid-template-areas: "flow" "arsenal" "controls";
   grid-template-columns: 1fr;

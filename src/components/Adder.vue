@@ -11,12 +11,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .adder {
-  text-align: center;
+  display: inline-block;
 
   div {
     background: white;
     color: black;
+    text-align: center;
     display: inline-block;
     font-size: 2rem;
     width: 2rem;
@@ -30,5 +32,7 @@ export default {
     }
   }
 }
+
+
 
 </style>
