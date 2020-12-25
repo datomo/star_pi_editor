@@ -46,6 +46,8 @@ export default {
 </script>
 
 <style lang="scss">
+
+
 .block {
   background: red;
   width: 100%;

@@ -126,6 +126,9 @@ export default createStore({
     },
     allChildren: (state) => {
       return state.children;
+    },
+    types: (state) => {
+      return state.options.type;
     }
   },
   modules: {},
