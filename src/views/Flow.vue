@@ -3,11 +3,6 @@
     <div class="flow">
       <Block v-for="block in root" :id="block.id" :key="block.id"/>
     </div>
-    <div class="controls">
-      <div @click="addBlock(null)" class="btn">Add Block</div>
-      <div @click="saveConfig" class="btn">Save Config</div>
-      <div @click="clear" class="btn">Clear</div>
-    </div>
   </div>
 </template>
 
@@ -37,27 +32,14 @@ export default {
 .home {
   height: 100%;
   display: grid;
-  grid-template-areas: "flow" "arsenal" "controls";
+  grid-template-areas: "flow" "arsenal";
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 0.8fr auto;
+  grid-template-rows: 1fr 0.8fr;
 
   .blocks {
     grid-area: blocks;
   }
 
-  .controls {
-    grid-area: controls;
-  }
-}
-
-.btn {
-  background-color: #4a72ca;
-  color: black;
-  display: inline-block;
-  padding: 1rem;
-  margin: 0.2rem;
-  border-radius: 2px;
-  cursor: pointer;
 }
 
 h1, h2, h3 {

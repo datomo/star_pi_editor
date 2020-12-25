@@ -1,12 +1,26 @@
 <template>
-  <div class="nav">
-    <router-link class="router-link" to="/">Flow</router-link>
-    <router-link class="router-link" to="/blocks">Blocks</router-link>
+  <div class="taskbar">
+    <div class="nav">
+      <router-link class="router-link btn" to="/">Flow</router-link>
+      <router-link class="router-link btn" to="/blocks">Blocks</router-link>
+    </div>
+    <div class="spacer"></div>
+    <Control/>
   </div>
   <div class="view">
     <router-view/>
   </div>
 </template>
+
+<script>
+import Control from "@/components/Control";
+
+export default {
+  components: {
+    Control
+  }
+}
+</script>
 
 <style lang="scss">
 html {
@@ -17,7 +31,7 @@ html {
   color: #96c2e0;
 }
 
-#app{
+#app {
   height: 100vh;
   display: grid;
   grid-template-areas: "nav" "view";
@@ -28,10 +42,10 @@ html {
   grid-area: view;
 }
 
-.nav {
+.taskbar {
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
   grid-area: nav;
 
   :first-child {
@@ -41,18 +55,28 @@ html {
   :last-child {
     border-radius: 0 8px 8px 0;
   }
-}
 
-.router-link {
+}
+.btn {
   color: black;
   background-color: #42b983;
   padding: 0.4rem;
   margin: 0.2rem;
-  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
 
-  &.router-link-exact-active {
+  &:hover {
     color: gray;
   }
+}
+
+.router-link-exact-active {
+  background-color: grey;
+  display: inline-block;
+}
+
+.router-link {
+  text-decoration: none;
 }
 
 * {
