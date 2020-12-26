@@ -33,6 +33,7 @@ html {
 
 #app {
   height: 100vh;
+  width: 100vw;
   display: grid;
   grid-template-areas: "nav" "view";
   grid-template-rows: max-content 1fr;
@@ -82,5 +83,6 @@ html {
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 </style>

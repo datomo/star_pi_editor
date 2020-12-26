@@ -1,46 +1,35 @@
 <template>
   <div class="home">
+    <h1>Flow</h1>
     <div class="flow">
       <Block v-for="block in root" :id="block.id" :key="block.id"/>
     </div>
+    <Adder/>
   </div>
 </template>
 
 <script>
-import {useGetters, useActions} from "@/helpers/store";
+import {useGetters} from "@/helpers/store";
 import Block from "@/components/Description";
+import Adder from "@/components/Adder";
 
 export default {
-  name: 'Home',
+  name: 'Flow',
   components: {
     Block,
+    Adder
   },
   setup() {
-    const {root} = useGetters(["root", "types"]);
-    const {addBlock, clear, saveConfig} = useActions(["addBlock", "clear", "saveConfig"])
+    const {root} = useGetters(["root"]);
 
     return {
-      addBlock, clear, root, saveConfig
+      root
     }
   },
 }
 </script>
 
 <style lang="scss">
-
-
-.home {
-  height: 100%;
-  display: grid;
-  grid-template-areas: "flow" "arsenal";
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 0.8fr;
-
-  .blocks {
-    grid-area: blocks;
-  }
-
-}
 
 h1, h2, h3 {
   font-weight: normal;

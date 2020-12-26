@@ -1,15 +1,16 @@
 <template>
   <div class="blocks">
+    <h1>Blocks</h1>
     <div v-for="block in blocks" class="type" :key="block.id">
       <Description :id="block.id"></Description>
     </div>
-    <Adder/>
+    <Adder class="adder" @click="addType"/>
   </div>
 </template>
 
 
 <script>
-import {useGetters} from "@/helpers/store";
+import {useGetters, useActions} from "@/helpers/store";
 import Adder from "@/components/Adder";
 import Description from "@/components/Description";
 
@@ -21,26 +22,22 @@ export default {
   },
   setup() {
     const {blocks} = useGetters(["blocks"]);
+    const {addType} = useActions(["addType"])
 
     return {
-      blocks
+      blocks, addType
     }
   },
 }
 </script>
 
 
-<style lang="scss">
-.blocks {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  width: 100%;
-
-  * {
-    flex-grow: 1;
-  }
-
+<style lang="scss" scoped>
+.adder {
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
 }
+
 
 </style>

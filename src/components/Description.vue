@@ -1,24 +1,25 @@
 <template>
-  <div class="block">
+  <div class="block" :style="{ backgroundColor : colors[block.options.type]}">
     <p>id: {{ id }}</p>
-    <Pin />
-    <div class="options" >
-      <Option :id="id" :key="key" :name="key" v-for="(value, key) in block.options" />
+    <div class="input-group">
+      <p>name:</p>
+      <input type="text" v-model="name">
     </div>
-    <div class="children">
-      <Block v-for="block in children" :key="block" :id="block.id" />
+
+    <Pin/>
+    <div class="options">
+      <Option :id="id" :key="key" :name="key" v-for="(value, key) in block.options"/>
     </div>
-    <div @click="addBlock(id)" class="btn">Add Button</div>
+
   </div>
 </template>
 
 <script>
 import Pin from "@/block/Pin";
 import Option from "@/block/Option";
-import { useStore } from "vuex";
-//import { useGetters } from "@/helpers/store";
-import { useActions } from "@/helpers/store";
-import { computed } from "vue";
+import {useStore} from "vuex";
+import { useGetters } from "@/helpers/store";
+import {computed} from "vue";
 
 export default {
   props: ["id"],
@@ -27,20 +28,21 @@ export default {
     Option,
   },
   watch: {
-    children(newChild) {
-      console.log("child changed")
-      console.log(newChild)
-    }
+    colors() {
+      console.log("new color")
+    },
   },
   setup(props) {
     const store = useStore()
     const block = store.getters.getBlock(props.id);
+    const { colors } = useGetters(["colors"]);
 
-    const children = computed(() => store.getters.getChildren(props.id));
+    const name = computed({
+      get: () => store.getters.getBlock(props.id).name,
+      set: name => store.dispatch("setName", {id: props.id, name})
+    })
 
-    const {addBlock} = useActions(["addBlock"]);
-
-    return { block, children, addBlock};
+    return {block, name, colors};
   },
 };
 </script>
@@ -49,14 +51,17 @@ export default {
 
 
 .block {
-  background: red;
   width: 100%;
   padding: 0.4rem;
-  margin: 0.4rem;
+  margin-bottom: 0.4rem;
   border-radius: 2px;
 }
 
 .children {
   border: 2px solid black;
+}
+
+.input-group {
+  display: flex;
 }
 </style>

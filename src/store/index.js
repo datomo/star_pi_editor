@@ -9,7 +9,7 @@ export default createStore({
         children: {},
         default: {
             id: null,
-            parent: null,
+            name: "",
             options: {}
         },
         options: {
@@ -17,12 +17,11 @@ export default createStore({
             module: ["motor", "button"]
         },
         colors: {
-            type: {
-                action: "red",
-                trigger: "blue"
-            }
+            action: "red",
+            trigger: "blue"
         },
         id: 0,
+        fileName: "config.json"
     },
     mutations: {
         incrementId(state) {
@@ -57,54 +56,45 @@ export default createStore({
         setOption(state, {id, name, value}) {
             state.blocks[id].options[name] = value;
         },
+        setName(state, {id, name}) {
+            state.blocks[id].name = name;
+        },
         clearBlocks(state) {
             state.root = [];
-            state.dynamic = {};
-            state.static = {};
+            state.blocks = {};
         }
     },
     actions: {
-        async addBlock({state, commit}, parent) {
+        async addType({state, commit}) {
             const id = state.id;
             commit("incrementId");
 
             await commit("addBlock", id);
 
 
-            if (parent == null) {
+            /*if (parent == null) {
                 commit("addRoot", id);
             } else {
                 commit("addChild", {parent, id})
-            }
+            }*/
         },
         setOption({commit}, payload) {
             commit("setOption", payload)
+        },
+        setName({commit}, payload) {
+            commit("setName", payload)
         },
         clear({commit}) {
             commit("resetId");
             commit("clearBlocks");
         },
-        async saveConfig({state, dispatch}) {
+        async saveConfig({dispatch, state}) {
             const result = {}
-            for (const id of state.root) {
-                result[id] = await dispatch("parseBlock", id)
-
-            }
-            dispatch("saveFile", {fileName: "test.json", content: result});
-        },
-        async parseBlock({state, dispatch}, id) {
-            const result = JSON.parse(JSON.stringify(state.blocks[id]));
-
-            result["children"] = {};
-            console.log(state.children[id])
-            // no need to check if exist as it has to be creation on initation
-            for (const child of state.children[id]) {
-                result["children"][child] = await dispatch("parseBlock", child);
-            }
-
-            return result;
+            result["blocks"] = state.blocks;
+            dispatch("saveFile", {fileName: state.fileName, content: result});
         },
         saveFile(_, {fileName, content}) {
+            console.log(content)
             fs.writeFile(fileName, JSON.stringify(content), (err) => {
                 if (err) {
                     console.log(err);
@@ -112,6 +102,16 @@ export default createStore({
                     console.log("saving successfull")
                 }
             })
+        },
+        async loadFile(_, {fileName}) {
+            return JSON.parse(fs.readFileSync(fileName).toString());
+        },
+        async loadConfig({state, dispatch}) {
+            dispatch("loadFile", {fileName: state.fileName}).then((result) => {
+                state.blocks = result["blocks"];
+                state.id = Math.max(...Object.keys(state.blocks).map(Number)) + 1;
+            })
+
         }
     },
     getters: {
@@ -135,6 +135,12 @@ export default createStore({
         },
         types: (state) => {
             return state.options.type;
+        },
+        blocks: (state) => {
+            return state.blocks;
+        },
+        colors: (state) => {
+            return state.colors;
         }
     },
     modules: {},
