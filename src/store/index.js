@@ -161,6 +161,9 @@ export default createStore({
         },
         colors: (state) => {
             return state.colors;
+        },
+        isRoot: (state) => (id) => {
+            return state.root.includes(id);
         }
     },
     modules: {},
