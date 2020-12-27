@@ -1,6 +1,7 @@
 <template>
   <div class="flow-selector">
     <div class="popup">
+      <div class="close" @click="$emit('close')">X</div>
       <div class="tab-header">
         <h2 v-for="(type, index) in types" :key="type" :class="{'active': index === active}" @click="active = index">
           {{ type + "s" }}</h2>

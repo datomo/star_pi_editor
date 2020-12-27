@@ -107,9 +107,8 @@ export default createStore({
             commit("clearBlocks");
         },
         async saveConfig({dispatch, state}) {
-            const result = {}
-            result["blocks"] = state.blocks;
-            dispatch("saveFile", {fileName: state.fileName, content: result});
+
+            dispatch("saveFile", {fileName: state.fileName, content: state});
         },
         saveFile(_, {fileName, content}) {
             console.log(content)
@@ -126,8 +125,8 @@ export default createStore({
         },
         async loadConfig({state, dispatch}) {
             dispatch("loadFile", {fileName: state.fileName}).then((result) => {
-                state.blocks = result["blocks"];
-                state.id = Math.max(...Object.keys(state.blocks).map(Number)) + 1;
+                Object.keys(result).forEach(k => state[k] = result[k])
+                //state.id = Math.max(...Object.keys(state.blocks).map(Number)) + 1;
             })
 
         }
