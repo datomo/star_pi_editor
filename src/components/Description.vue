@@ -34,11 +34,11 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    const block = store.getters.getBlock(props.id);
+    const block = store.getters.block(props.id);
     const { colors } = useGetters(["colors"]);
 
     const name = computed({
-      get: () => store.getters.getBlock(props.id).name,
+      get: () => store.getters.block(props.id).name,
       set: name => store.dispatch("setName", {id: props.id, name})
     })
 

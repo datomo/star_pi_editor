@@ -6,6 +6,7 @@ export default createStore({
         root: [],
         //blocks
         blocks: {},
+        flowBlocks: {},
         children: {},
         default: {
             id: null,
@@ -21,11 +22,15 @@ export default createStore({
             trigger: "blue"
         },
         id: 0,
+        flowId: 0,
         fileName: "config.json"
     },
     mutations: {
         incrementId(state) {
             state.id++;
+        },
+        incrementFlowId(state) {
+            state.flowId++;
         },
         addRoot(state, id) {
             state.root.push(id);
@@ -33,7 +38,7 @@ export default createStore({
         addBlock(state, id) {
             const block = JSON.parse(JSON.stringify(state.default));
             block.id = id;
-
+            block.name = "block" + id;
             block.options = {};
 
             Object.entries(state.options).forEach(([key, value]) => {
@@ -46,9 +51,12 @@ export default createStore({
 
             console.log(state.children[id])
         },
-        addChild(state, {parent, id}) {
-            console.log("adding child")
-            state.children[parent].push(id);
+        addFlow(state, {flowId, id}){
+          state.flowBlocks[flowId] = id;
+          state.children[flowId] = [];
+        },
+        addChild(state, {parentId, id}) {
+            state.children[parentId].push(id);
         },
         resetId(state) {
             state.id = 0;
@@ -70,13 +78,23 @@ export default createStore({
             commit("incrementId");
 
             await commit("addBlock", id);
+        },
+        async addFlow({state, commit}, {id, parentId}) {
+            // each new flow block has a hidden id behind it
+            // this needs to be stored;
+            const flowId = state.flowId;
+            commit("incrementFlowId");
 
+            console.log("addedflow: " + flowId)
 
-            /*if (parent == null) {
-                commit("addRoot", id);
-            } else {
-                commit("addChild", {parent, id})
-            }*/
+            await commit("addFlow", {flowId, id});
+            console.log(state.children)
+
+            if (parentId === null || parentId === undefined) {
+                commit("addRoot", flowId);
+            }else {
+                commit("addChild", {parentId, id: flowId});
+            }
         },
         setOption({commit}, payload) {
             commit("setOption", payload)
@@ -116,10 +134,13 @@ export default createStore({
     },
     getters: {
         root: (state) => {
-            return state.root.map((id) => state.blocks[id]);
+            return state.root;
         },
-        getBlock: (state) => (id) => {
+        block: (state) => (id) => {
             return state.blocks[id];
+        },
+        flowBlock: (state) => (id) => {
+            return state.blocks[state.flowBlocks[id]];
         },
         getChildren: (state) => (id) => {
             return state.children[id].map((id) => state.blocks[id]);
@@ -130,7 +151,7 @@ export default createStore({
         option: (state) => ({id, name}) => {
             return state.blocks[id].options[name];
         },
-        allChildren: (state) => {
+        children: (state) => {
             return state.children;
         },
         types: (state) => {
