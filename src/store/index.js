@@ -154,11 +154,16 @@ export default createStore({
             })
             commit("removeDescription", id);
         },
-        removeFlowBlock({state, commit}, id) {
+        async removeFlowBlock({state, dispatch, commit}, id) {
             if (state.root.includes(id)) {
                 commit("removeRoot", id);
             }
             if (id in state.children) {
+                console.log(state.children[id]);
+                for( const childId of state.children[id]){
+                    console.log(childId);
+                    await dispatch("removeFlowBlock", childId);
+                }
                 commit("removeParent", id);
             }
 
