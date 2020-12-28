@@ -8,7 +8,7 @@
                 </marker>
             </defs>
 
-            <line x1="10" y1="0" x2="180" y2="10" class="arrow"/>
+            <line x1="10" y1="10" x2="180" y2="10" class="arrow"/>
         </svg>
     </div>
 </template>

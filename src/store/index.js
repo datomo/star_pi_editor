@@ -51,9 +51,9 @@ export default createStore({
 
             console.log(state.children[id])
         },
-        addFlow(state, {flowId, id}){
-          state.flowBlocks[flowId] = id;
-          state.children[flowId] = [];
+        addFlow(state, {flowId, id}) {
+            state.flowBlocks[flowId] = id;
+            state.children[flowId] = [];
         },
         addChild(state, {parentId, id}) {
             state.children[parentId].push(id);
@@ -70,6 +70,21 @@ export default createStore({
         clearBlocks(state) {
             state.root = [];
             state.blocks = {};
+        },
+        removeDescription(state, id) {
+            delete state.blocks[id];
+        },
+        removeRoot(state, id) {
+            state.root = state.root.filter(el => el !== id)
+        },
+        removeParent(state, id) {
+            delete state.children[id]
+        },
+        removeChild(state, {id, parentId}) {
+            state.children = state.children[parentId].filter(el => el != id)
+        },
+        removeFlow(state, id) {
+            delete state.flowBlocks[id];
         }
     },
     actions: {
@@ -92,7 +107,7 @@ export default createStore({
 
             if (parentId === null || parentId === undefined) {
                 commit("addRoot", flowId);
-            }else {
+            } else {
                 commit("addChild", {parentId, id: flowId});
             }
         },
@@ -116,7 +131,7 @@ export default createStore({
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("saving successfull")
+                    console.log("saving successful")
                 }
             })
         },
@@ -126,9 +141,32 @@ export default createStore({
         async loadConfig({state, dispatch}) {
             dispatch("loadFile", {fileName: state.fileName}).then((result) => {
                 Object.keys(result).forEach(k => state[k] = result[k])
-                //state.id = Math.max(...Object.keys(state.blocks).map(Number)) + 1;
             })
 
+        },
+        removeDescription({state, dispatch}, id) {
+            Object.keys(state.flowBlocks).forEach(flowId => {
+                if(state.flowBlocks[flowId] === id ) {
+                    dispatch("removeFlowBlock", flowId);
+                }
+            })
+            dispatch("removeDescription", id);
+        },
+        removeFlowBlock({state, dispatch}, id) {
+            if (id in state.root) {
+                dispatch("removeRoot", id);
+            }
+            if (id in state.children) {
+                dispatch("removeParent", id);
+            }
+
+            Object.keys(state.children).forEach(parentId => {
+                if (state.children[parentId].includes(id)) {
+                    dispatch("removeChild", {id, parentId});
+                }
+            })
+
+            dispatch("removeFlow", id);
         }
     },
     getters: {

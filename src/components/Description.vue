@@ -1,5 +1,8 @@
 <template>
   <div class="block" :style="{ backgroundColor : colors[block.options.type]}">
+    <div class="taskbar">
+      <div class="close" @click="remove">x</div>
+    </div>
     <p>id: {{ id }}</p>
     <div class="input-group">
       <p>name:</p>
@@ -18,7 +21,7 @@
 import Pin from "@/block/Pin";
 import Option from "@/block/Option";
 import {useStore} from "vuex";
-import { useGetters } from "@/helpers/store";
+import {useGetters} from "@/helpers/store";
 import {computed} from "vue";
 
 export default {
@@ -27,22 +30,19 @@ export default {
     Pin,
     Option,
   },
-  watch: {
-    colors() {
-      console.log("new color")
-    },
-  },
   setup(props) {
     const store = useStore()
     const block = store.getters.block(props.id);
-    const { colors } = useGetters(["colors"]);
+    const {colors} = useGetters(["colors"]);
 
     const name = computed({
       get: () => store.getters.block(props.id).name,
       set: name => store.dispatch("setName", {id: props.id, name})
     })
 
-    return {block, name, colors};
+    const remove = () => store.dispatch("removeDescription", props.id);
+
+    return {block, name, colors, remove};
   },
 };
 </script>
