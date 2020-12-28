@@ -3,6 +3,7 @@
         <div class="block-arrow">
             <Arrow v-if="!isRoot"/>
             <div class="block" :style="{ backgroundColor : colors[block.options.type]}">
+                <h2 @click="removeFlowBlock(id)">x</h2>
                 <div class="description">
                     <h3>Name: {{ block.name }}</h3>
                     <h3>type: {{ block.options.type }}</h3>
@@ -39,11 +40,11 @@
             const isRoot = store.getters.isRoot(props.id);
 
             const {colors, children} = useGetters(["colors", "children"]);
-            const {addFlow} = useActions(["addFlow"]);
+            const {addFlow, removeFlowBlock } = useActions(["addFlowBlock", "removeFlowBlock"]);
             const childrenVisible = ref(true);
 
             return {
-                block, colors, addFlow, children, isRoot, childrenVisible
+                block, colors, addFlow, children, isRoot, childrenVisible, removeFlowBlock
             }
         }
     }

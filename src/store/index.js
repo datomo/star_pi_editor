@@ -75,13 +75,14 @@ export default createStore({
             delete state.blocks[id];
         },
         removeRoot(state, id) {
+            console.log("remove " + id)
             state.root = state.root.filter(el => el !== id)
         },
         removeParent(state, id) {
             delete state.children[id]
         },
         removeChild(state, {id, parentId}) {
-            state.children = state.children[parentId].filter(el => el != id)
+            state.children[parentId] = state.children[parentId].filter(el => el != id)
         },
         removeFlow(state, id) {
             delete state.flowBlocks[id];
@@ -144,29 +145,31 @@ export default createStore({
             })
 
         },
-        removeDescription({state, dispatch}, id) {
+        removeDescription({state, dispatch, commit}, id) {
             Object.keys(state.flowBlocks).forEach(flowId => {
-                if(state.flowBlocks[flowId] === id ) {
-                    dispatch("removeFlowBlock", flowId);
+                if (state.flowBlocks[flowId] === id) {
+                    console.log("removing flow")
+                    dispatch("removeFlowBlock", Number(flowId));
                 }
             })
-            dispatch("removeDescription", id);
+            commit("removeDescription", id);
         },
-        removeFlowBlock({state, dispatch}, id) {
-            if (id in state.root) {
-                dispatch("removeRoot", id);
+        removeFlowBlock({state, commit}, id) {
+            if (state.root.includes(id)) {
+                commit("removeRoot", id);
             }
             if (id in state.children) {
-                dispatch("removeParent", id);
+                commit("removeParent", id);
             }
 
             Object.keys(state.children).forEach(parentId => {
                 if (state.children[parentId].includes(id)) {
-                    dispatch("removeChild", {id, parentId});
+                    commit("removeChild", {id, parentId});
                 }
             })
 
-            dispatch("removeFlow", id);
+            commit("removeFlow", id);
+            console.log(state)
         }
     },
     getters: {
