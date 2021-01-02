@@ -4,7 +4,7 @@
     <div v-for="block in blocks" class="type" :key="block.id">
       <Description :id="block.id"></Description>
     </div>
-    <Adder class="adder" @click="addType"/>
+    <Adder class="adder" @click="addDescription"/>
   </div>
 </template>
 
@@ -22,10 +22,10 @@ export default {
   },
   setup() {
     const {blocks} = useGetters(["blocks"]);
-    const {addType} = useActions(["addType"])
+    const {addDescription} = useActions(["addDescription"])
 
     return {
-      blocks, addType
+      blocks, addDescription
     }
   },
 }

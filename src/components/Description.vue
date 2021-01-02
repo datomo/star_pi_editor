@@ -9,7 +9,7 @@
       <input type="text" v-model="name">
     </div>
 
-    <Pin/>
+    <Pin :id="id"/>
     <div class="options">
       <Option :id="id" :key="key" :name="key" v-for="(value, key) in block.options"/>
     </div>

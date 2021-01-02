@@ -9,11 +9,19 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useStore} from "vuex";
+import {useActions} from "@/helpers/store";
 
 export default {
-  setup() {
-    const pins = ref([]);
+  props: ["id"],
+  setup(props) {
+    const store = useStore();
+    const {setPins} = useActions(["setPins"]);
+    const pins = computed({
+      get: () => store.getters.pins(props.id),
+      set: pins => setPins({id: props.id, pins})
+    });
     const blocked = [1, 2, 4, 6, 9, 14, 17, 20, 25, 27, 28, 30, 34, 39]
     const pinsVisible = ref(true)
 

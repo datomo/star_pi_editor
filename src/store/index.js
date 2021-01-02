@@ -10,6 +10,7 @@ export default createStore({
         children: {},
         default: {
             id: null,
+            pins: [],
             name: "",
             options: {}
         },
@@ -35,7 +36,7 @@ export default createStore({
         addRoot(state, id) {
             state.root.push(id);
         },
-        addBlock(state, id) {
+        addDescription(state, id) {
             const block = JSON.parse(JSON.stringify(state.default));
             block.id = id;
             block.name = "block" + id;
@@ -89,14 +90,17 @@ export default createStore({
         },
         setCommand(state, { id, command}) {
             state.flowBlocks[id].command = command;
+        },
+        setPins(state, {id, pins}) {
+            state.blocks[id].pins = pins;
         }
     },
     actions: {
-        async addType({state, commit}) {
+        async addDescription({state, commit}) {
             const id = state.id;
             commit("incrementId");
 
-            await commit("addBlock", id);
+            await commit("addDescription", id);
         },
         async addFlow({state, commit}, {id, parentId, command}) {
             // each new flow block has a hidden id behind it
@@ -175,10 +179,13 @@ export default createStore({
             })
 
             commit("removeFlow", id);
-            console.log(state)
+            console.log(state);
         },
         setCommand({commit}, payload) {
-            commit("setCommand", payload)
+            commit("setCommand", payload);
+        },
+        setPins({commit}, payload) {
+            commit("setPins", payload);
         }
     },
     getters: {
@@ -217,6 +224,9 @@ export default createStore({
         },
         command: (state) => (flowId) => {
             return state.flowBlocks[flowId].command;
+        },
+        pins: (state) => (id) => {
+            return state.blocks[id].pins;
         }
     },
     modules: {},
