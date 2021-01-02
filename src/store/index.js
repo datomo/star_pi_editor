@@ -51,8 +51,8 @@ export default createStore({
 
             console.log(state.children[id])
         },
-        addFlow(state, {flowId, id}) {
-            state.flowBlocks[flowId] = id;
+        addFlow(state, {flowId, id, command}) {
+            state.flowBlocks[flowId] = {id, flowId, command};
             state.children[flowId] = [];
         },
         addChild(state, {parentId, id}) {
@@ -86,6 +86,9 @@ export default createStore({
         },
         removeFlow(state, id) {
             delete state.flowBlocks[id];
+        },
+        setCommand(state, { id, command}) {
+            state.flowBlocks[id].command = command;
         }
     },
     actions: {
@@ -95,15 +98,13 @@ export default createStore({
 
             await commit("addBlock", id);
         },
-        async addFlow({state, commit}, {id, parentId}) {
+        async addFlow({state, commit}, {id, parentId, command}) {
             // each new flow block has a hidden id behind it
             // this needs to be stored;
             const flowId = state.flowId;
             commit("incrementFlowId");
 
-            console.log("addedflow: " + flowId)
-
-            await commit("addFlow", {flowId, id});
+            await commit("addFlow", {flowId, id, command});
             console.log(state.children)
 
             if (parentId === null || parentId === undefined) {
@@ -146,8 +147,8 @@ export default createStore({
 
         },
         removeDescription({state, dispatch, commit}, id) {
-            Object.keys(state.flowBlocks).forEach(flowId => {
-                if (state.flowBlocks[flowId] === id) {
+            Object.keys(state.flowBlocks).forEach((_, flowId) => {
+                if (state.flowBlocks[flowId].id === id) {
                     console.log("removing flow")
                     dispatch("removeFlowBlock", Number(flowId));
                 }
@@ -175,6 +176,9 @@ export default createStore({
 
             commit("removeFlow", id);
             console.log(state)
+        },
+        setCommand({commit}, payload) {
+            commit("setCommand", payload)
         }
     },
     getters: {
@@ -185,7 +189,7 @@ export default createStore({
             return state.blocks[id];
         },
         flowBlock: (state) => (id) => {
-            return state.blocks[state.flowBlocks[id]];
+            return state.blocks[state.flowBlocks[id].id];
         },
         getChildren: (state) => (id) => {
             return state.children[id].map((id) => state.blocks[id]);
@@ -210,6 +214,9 @@ export default createStore({
         },
         isRoot: (state) => (id) => {
             return state.root.includes(id);
+        },
+        command: (state) => (flowId) => {
+            return state.flowBlocks[flowId].command;
         }
     },
     modules: {},

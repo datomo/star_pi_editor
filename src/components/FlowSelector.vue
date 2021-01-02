@@ -31,7 +31,7 @@ export default {
 
 
     const commit = (id) => {
-      addFlow({id, parentId: props.parentId});
+      addFlow({id, parentId: props.parentId, command: "rotate30"});
       context.emit("close");
     }
 
