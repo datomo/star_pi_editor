@@ -52,7 +52,7 @@ export default createStore({
             console.log(state.children[id])
         },
         addFlow(state, {flowId, id, command}) {
-            state.flowBlocks[flowId] = {id, flowId, command};
+            state.flowBlocks[flowId] = {id, command};
             state.children[flowId] = [];
         },
         addChild(state, {parentId, id}) {
