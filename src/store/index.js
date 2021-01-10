@@ -1,5 +1,6 @@
 import {createStore} from "vuex";
 import * as fs from "fs";
+import {normal_2_gpio} from "@/helpers/pin";
 
 export default createStore({
     state: {
@@ -11,16 +12,18 @@ export default createStore({
         default: {
             id: null,
             pins: [],
+            gpio_pins: [],
             name: "",
             options: {}
         },
         options: {
-            type: ["action", "trigger"],
-            module: ["motor", "button"]
+            type: ["action", "trigger", "observer"],
+            module: ["motor", "button", "scale"]
         },
         colors: {
             action: "red",
-            trigger: "blue"
+            trigger: "blue",
+            observer: "yellow"
         },
         id: 0,
         flowId: 0,
@@ -88,12 +91,12 @@ export default createStore({
         removeFlow(state, id) {
             delete state.flowBlocks[id];
         },
-        setCommand(state, { id, command}) {
+        setCommand(state, {id, command}) {
             state.flowBlocks[id].command = command;
         },
         setPins(state, {id, pins}) {
             state.blocks[id].pins = pins;
-        }
+        },
     },
     actions: {
         async addDescription({state, commit}) {
@@ -165,7 +168,7 @@ export default createStore({
             }
             if (id in state.children) {
                 console.log(state.children[id]);
-                for( const childId of state.children[id]){
+                for (const childId of state.children[id]) {
                     console.log(childId);
                     await dispatch("removeFlowBlock", childId);
                 }
@@ -184,8 +187,10 @@ export default createStore({
         setCommand({commit}, payload) {
             commit("setCommand", payload);
         },
-        setPins({commit}, payload) {
-            commit("setPins", payload);
+        async setPins({commit}, {id, pins}) {
+            let trans = await pins.map(pin => normal_2_gpio(pin))
+            commit("setGpio", {id, pins: trans})
+            await commit("setPins", {id, pins});
         }
     },
     getters: {

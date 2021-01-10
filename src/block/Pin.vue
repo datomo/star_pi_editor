@@ -1,9 +1,13 @@
 <template>
-  <div class="pin-toggle btn" @click="toggleAll">{{ pinsVisible ? "Hide Pins" : "Show Pins" }}</div>
+  <div class="controls">
+    <div class="pin-toggle btn" @click="toggleAll">{{ pinsVisible ? "Hide Pins" : "Show Pins" }}</div>
+    <div class="gpio-toggle btn" @click="gpio_map = !gpio_map">{{ gpio_map ? "GPIO" : "No GPIO" }}</div>
+  </div>
+
   <div class="pins" v-if="pinsVisible">
     <div @click="toggle(pin)" class="pin" v-for="pin in 40" :key="pin"
-         :class="{'selected': pins.includes(pin), 'blocked': blocked.includes(pin)}">
-      {{ pin }}
+         :class="{'selected': pins.includes(pin), 'blocked': !(pin in normal_gpio)}">
+      {{ translate_gpio(pin) }}
     </div>
   </div>
 </template>
@@ -12,6 +16,7 @@
 import {computed, ref} from "vue";
 import {useStore} from "vuex";
 import {useActions} from "@/helpers/store";
+import {normal_2_gpio, normal_gpio} from "@/helpers/pin";
 
 export default {
   props: ["id"],
@@ -20,15 +25,28 @@ export default {
     const {setPins} = useActions(["setPins"]);
     const pins = computed({
       get: () => store.getters.pins(props.id),
-      set: pins => setPins({id: props.id, pins})
+      set: pins => setPins({id: props.id, pins: pins})
     });
-    const blocked = [1, 2, 4, 6, 9, 14, 17, 20, 25, 27, 28, 30, 34, 39]
-    const pinsVisible = ref(true)
+
+    const gpio_map = ref(true);
+    const translate_gpio = (pin) => {
+      if (gpio_map.value) {
+        return normal_2_gpio(pin);
+      } else {
+        if (pin in normal_gpio) {
+          return pin;
+        } else {
+          return "";
+        }
+      }
+    };
+    const pinsVisible = ref(true);
+
 
     const toggle = (pin) => {
       if (pins.value.includes(pin)) {
         pins.value.splice(pins.value.indexOf(pin), 1);
-      } else if (!blocked.includes(pin)) {
+      } else if (pin in normal_gpio) {
         pins.value.push(pin);
       }
     }
@@ -37,7 +55,7 @@ export default {
     }
 
     return {
-      pins, blocked, pinsVisible, toggle, toggleAll
+      pins, pinsVisible, toggle, toggleAll, translate_gpio, normal_gpio, gpio_map
     }
   }
 }
@@ -46,6 +64,10 @@ export default {
 <style lang="scss">
 .pin-toggle {
   display: inline-block;
+}
+
+.controls {
+  display: flex;
 }
 
 .pins {
