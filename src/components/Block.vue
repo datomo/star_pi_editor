@@ -22,6 +22,8 @@
     <div class="children" v-if="childrenVisible">
       <Block v-for="child in children[id]" :id="child" :key="child"
              @openPopup="(passedId) => $emit('openPopup', passedId)"/>
+
+      // TODO insert component
     </div>
   </div>
 </template>

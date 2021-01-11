@@ -7,8 +7,15 @@
           {{ type + "s" }}</h2>
       </div>
       <div class="blocks">
-        <div v-for="block of selectedBlocks" :key="block.id" class="block" @click="commit(block.id)">
-          <div class="btn">Name: {{ block.name }}</div>
+        <div v-if="types[active] === 'loop'">
+          <div class="block" @click="commitLoop">
+            <div class="btn">LOOP</div>
+          </div>
+        </div>
+        <div v-else>
+          <div v-for="block of selectedBlocks" :key="block.id" class="block" @click="commit(block.id)">
+            <div class="btn">Name: {{ block.name }}</div>
+          </div>
         </div>
 
       </div>
@@ -17,7 +24,7 @@
 </template>
 
 <script>
-import {useGetters, useActions} from "@/helpers/store";
+import {useActions, useGetters} from "@/helpers/store";
 import {computed, ref} from "vue";
 
 export default {
@@ -25,7 +32,7 @@ export default {
   props: ["parentId"],
   setup(props, context) {
     const {blocks, types} = useGetters(["blocks", "types"]);
-    const {addFlow} = useActions(["addFlow"]);
+    const {addFlow, addLoop} = useActions(["addFlow", "addLoop"]);
     const active = ref(0);
     const selectedBlocks = computed(() => Object.values(blocks.value).filter(b => b.options.type === types.value[active.value]));
 
@@ -35,9 +42,14 @@ export default {
       context.emit("close");
     }
 
+    const commitLoop = () => {
+      addLoop(props.parentId);
+      context.emit("close");
+    }
+
 
     return {
-      blocks, types, active, selectedBlocks, commit
+      blocks, types, active, selectedBlocks, commit, commitLoop
     }
   }
 }

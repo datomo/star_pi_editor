@@ -8,6 +8,7 @@ export default createStore({
         blocks: {},
         flowBlocks: {},
         children: {},
+        loops: {},
         default: {
             id: null,
             pins: [],
@@ -15,13 +16,14 @@ export default createStore({
             options: {}
         },
         options: {
-            type: ["action", "trigger", "observer"],
+            type: ["action", "trigger", "observer", "loop"],
             module: ["motor", "button", "scale"]
         },
         colors: {
             action: "red",
             trigger: "blue",
-            observer: "yellow"
+            observer: "yellow",
+            loop: "pink"
         },
         id: 0,
         flowId: 0,
@@ -55,6 +57,10 @@ export default createStore({
         },
         addFlow(state, {flowId, id, command}) {
             state.flowBlocks[flowId] = {id, command};
+            state.children[flowId] = [];
+        },
+        addLoop(state, flowId) {
+            state.loops[flowId] = {repeat: 0, target: flowId}
             state.children[flowId] = [];
         },
         addChild(state, {parentId, id}) {
@@ -116,6 +122,19 @@ export default createStore({
             commit("incrementFlowId");
 
             await commit("addFlow", {flowId, id, command});
+            console.log(state.children)
+
+            if (parentId === null || parentId === undefined) {
+                commit("addRoot", flowId);
+            } else {
+                commit("addChild", {parentId, id: flowId});
+            }
+        },
+        async addLoop({state, commit}, parentId) {
+            const flowId = state.flowId;
+            commit("incrementFlowId");
+
+            await commit("addLoop", flowId);
             console.log(state.children)
 
             if (parentId === null || parentId === undefined) {
