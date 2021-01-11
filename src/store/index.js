@@ -1,6 +1,5 @@
 import {createStore} from "vuex";
 import * as fs from "fs";
-import {normal_2_gpio} from "@/helpers/pin";
 
 export default createStore({
     state: {
@@ -12,7 +11,6 @@ export default createStore({
         default: {
             id: null,
             pins: [],
-            gpio_pins: [],
             name: "",
             options: {}
         },
@@ -97,6 +95,12 @@ export default createStore({
         setPins(state, {id, pins}) {
             state.blocks[id].pins = pins;
         },
+        addPin(state, {id, pin}) {
+            state.blocks[id].pins.push(pin);
+        },
+        removePin(state, {id, pin}) {
+            state.blocks[id].pins.splice(state.blocks[id].pins.indexOf(pin), 1);
+        }
     },
     actions: {
         async addDescription({state, commit}) {
@@ -131,7 +135,6 @@ export default createStore({
             commit("clearBlocks");
         },
         async saveConfig({dispatch, state}) {
-
             dispatch("saveFile", {fileName: state.fileName, content: state});
         },
         saveFile(_, {fileName, content}) {
@@ -187,10 +190,14 @@ export default createStore({
         setCommand({commit}, payload) {
             commit("setCommand", payload);
         },
-        async setPins({commit}, {id, pins}) {
-            let trans = await pins.map(pin => normal_2_gpio(pin))
-            commit("setGpio", {id, pins: trans})
-            await commit("setPins", {id, pins});
+        async setPins({commit}, payload) {
+            await commit("setPins", payload);
+        },
+        addPin({commit}, payload) {
+            commit("addPin", payload);
+        },
+        removePin({commit}, payload) {
+            commit("removePin", payload);
         }
     },
     getters: {

@@ -13,20 +13,17 @@
 </template>
 
 <script>
-import {computed, ref} from "vue";
+import {ref, computed} from "vue";
 import {useStore} from "vuex";
 import {useActions} from "@/helpers/store";
-import {normal_2_gpio, normal_gpio} from "@/helpers/pin";
+import {gpio_2_normal, normal_2_gpio, normal_gpio} from "@/helpers/pin";
 
 export default {
   props: ["id"],
   setup(props) {
     const store = useStore();
-    const {setPins} = useActions(["setPins"]);
-    const pins = computed({
-      get: () => store.getters.pins(props.id),
-      set: pins => setPins({id: props.id, pins: pins})
-    });
+    const {removePin, addPin} = useActions(["removePin", "addPin"]);
+    const pins = computed(() => store.getters.pins(props.id).map(pin => gpio_2_normal(pin)));
 
     const gpio_map = ref(true);
     const translate_gpio = (pin) => {
@@ -45,9 +42,10 @@ export default {
 
     const toggle = (pin) => {
       if (pins.value.includes(pin)) {
-        pins.value.splice(pins.value.indexOf(pin), 1);
+        removePin({id: props.id, pin})
       } else if (pin in normal_gpio) {
-        pins.value.push(pin);
+        //pins.value.push(pin);
+        addPin({id: props.id, pin: normal_2_gpio(pin)})
       }
     }
     const toggleAll = () => {
@@ -55,9 +53,9 @@ export default {
     }
 
     return {
-      pins, pinsVisible, toggle, toggleAll, translate_gpio, normal_gpio, gpio_map
+      pinsVisible, toggle, toggleAll, translate_gpio, normal_gpio, gpio_map, pins
     }
-  }
+  },
 }
 </script>
 
