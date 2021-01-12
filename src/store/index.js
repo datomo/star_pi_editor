@@ -56,8 +56,10 @@ export default createStore({
             console.log(state.children[id])
         },
         addFlow(state, {flowId, id, command}) {
+            console.log("added flow")
             state.flowBlocks[flowId] = {id, command};
             state.children[flowId] = [];
+            console.log(state.flowBlocks)
         },
         addLoop(state, flowId) {
             state.loops[flowId] = {repeat: 0, target: flowId}
@@ -116,13 +118,13 @@ export default createStore({
             await commit("addDescription", id);
         },
         async addFlow({state, commit}, {id, parentId, command}) {
+            console.log("adding")
             // each new flow block has a hidden id behind it
             // this needs to be stored;
             const flowId = state.flowId;
-            commit("incrementFlowId");
+            await commit("incrementFlowId");
 
             await commit("addFlow", {flowId, id, command});
-            console.log(state.children)
 
             if (parentId === null || parentId === undefined) {
                 commit("addRoot", flowId);
@@ -258,6 +260,12 @@ export default createStore({
         },
         pins: (state) => (id) => {
             return state.blocks[id].pins;
+        },
+        loops: (state) => {
+            return state.loops;
+        },
+        isLoop: (state) => (id) => {
+            return id in state.loops
         }
     },
     modules: {},

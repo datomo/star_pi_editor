@@ -2,7 +2,7 @@
   <div class="flow">
     <h1>Flow</h1>
     <div class="flow-blocks">
-      <Block v-for="block in root" :id="block" @openPopup="openPopup" :key="block"/>
+      <BlockWrapper v-for="block in root" :id="block" @openPopup="openPopup" :key="block"/>
     </div>
     <Adder @click="openAdder"/>
     <FlowSelector :parentId="parentId" @close="popupVisible = false" v-if="popupVisible"/>
@@ -11,15 +11,15 @@
 
 <script>
 import {useGetters} from "@/helpers/store";
-import Block from "@/components/Block";
 import Adder from "@/components/Adder";
 import FlowSelector from "@/components/FlowSelector";
 import {ref} from "vue";
+import BlockWrapper from "@/components/BlockWrapper";
 
 export default {
   name: 'Flow',
   components: {
-    Block,
+    BlockWrapper,
     Adder,
     FlowSelector
   },
