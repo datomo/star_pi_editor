@@ -108,6 +108,12 @@ export default createStore({
         },
         removePin(state, {id, pin}) {
             state.blocks[id].pins.splice(state.blocks[id].pins.indexOf(pin), 1);
+        },
+        setTarget(state, {id, target}) {
+            state.loops[id].target = target;
+        },
+        setRepeat(state, {id, repeat}) {
+            state.loops[id].repeat = repeat;
         }
     },
     actions: {
@@ -140,9 +146,9 @@ export default createStore({
             console.log(state.children)
 
             if (parentId === null || parentId === undefined) {
-                commit("addRoot", flowId);
+                await commit("addRoot", flowId);
             } else {
-                commit("addChild", {parentId, id: flowId});
+                await commit("addChild", {parentId, id: flowId});
             }
         },
         setOption({commit}, payload) {
@@ -219,6 +225,12 @@ export default createStore({
         },
         removePin({commit}, payload) {
             commit("removePin", payload);
+        },
+        async setTarget({commit}, payload) {
+            await commit("setTarget", payload);
+        },
+        async setRepeat({commit}, payload) {
+            await commit("setRepeat", payload);
         }
     },
     getters: {
@@ -266,6 +278,29 @@ export default createStore({
         },
         isLoop: (state) => (id) => {
             return id in state.loops
+        },
+        parent: (state) => () => {
+            let res = [];
+            // lambda is not working here so this does also right
+            for ( const key in Object.keys(state.children)){
+                if (state.children[key]){
+                    res += key;
+                }
+            }
+            return res[0];
+        },
+        parents: (state, getters) => (id) => {
+            // weirdly this is a object
+            if (Object.keys(state.root).includes(id)) {
+                return [];
+            } else {
+                const parentId = getters.parent(id);
+
+                return getters.parents(parentId) + [parentId];
+            }
+        },
+        state: (state) => {
+            return state
         }
     },
     modules: {},

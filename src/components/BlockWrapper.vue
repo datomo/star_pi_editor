@@ -4,8 +4,17 @@
       <Arrow v-if="!isRoot"/>
       <div class="block" :style="{ backgroundColor : colors[type]}">
         <h2 @click="removeFlowBlock(id)">x</h2>
-        <Link :id="id" v-if="type === 'loop'"/>
-        <Block :id="id" v-else/>
+        <div class="content">
+          <div>
+            <Link :id="id" v-if="type === 'loop'"/>
+            <Block :id="id" v-else/>
+          </div>
+
+          <div @click="childrenVisible = !childrenVisible" v-if="children[id].length > 0" class="btn">Toggle
+            {{ children[id].length }} Children
+          </div>
+        </div>
+
         <Adder class="arrow" @click="$emit('openPopup', id)"/>
       </div>
     </div>

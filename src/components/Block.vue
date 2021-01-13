@@ -6,10 +6,6 @@
       <h3>Command: </h3>
       <input type="text" v-model="command">
     </div>
-
-    <div @click="childrenVisible = !childrenVisible" v-if="children[id].length > 0" class="btn">Toggle
-      {{ children[id].length }} Children
-    </div>
   </div>
 </template>
 

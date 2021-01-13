@@ -2,6 +2,7 @@
   <div class="flow">
     <h1>Flow</h1>
     <div class="flow-blocks">
+
       <BlockWrapper v-for="block in root" :id="block" @openPopup="openPopup" :key="block"/>
     </div>
     <Adder @click="openAdder"/>
@@ -24,7 +25,7 @@ export default {
     FlowSelector
   },
   setup() {
-    const {root} = useGetters(["root"]);
+    const {root, state} = useGetters(["root", "state"]);
     const popupVisible = ref(false)
     const parentId = ref(null);
 
@@ -40,7 +41,7 @@ export default {
     }
 
     return {
-      root, openAdder, popupVisible, openPopup, parentId
+      root, openAdder, popupVisible, openPopup, parentId, state
     }
   },
 }
