@@ -3,7 +3,7 @@
     <div class="key">{{ name }}:</div>
     <div
       class="values"
-      :class="{ selected: option == value }"
+      :class="{ selected: option === value }"
       v-for="value in options"
       :key="value"
       @click="setOption({ id, name, value })"

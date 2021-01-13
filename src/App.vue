@@ -7,9 +7,12 @@
     <div class="spacer"></div>
     <Control/>
   </div>
+
   <div class="view">
     <router-view/>
   </div>
+
+
 </template>
 
 <script>
@@ -37,15 +40,25 @@ html {
   display: grid;
   grid-template-areas: "nav" "view";
   grid-template-rows: max-content 1fr;
+  position: relative;
 }
+
 
 .view {
   grid-area: view;
+  scroll-behavior: auto;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: auto;
+  bottom: 0;
 }
+
 
 .taskbar {
   display: flex;
-  width: 100%;
+  width: 100vw;
+  z-index: 10;
   justify-content: space-between;
   grid-area: nav;
 
@@ -58,6 +71,7 @@ html {
   }
 
 }
+
 .btn {
   color: black;
   background-color: #42b983;

@@ -60,8 +60,7 @@ export default {
     if (isLoop) {
       type = "loop";
     } else {
-      type = store.getters.flowBlock(props.id).options.type;
-      console.log();
+      type = store.getters.typeFlow(props.id);
     }
 
     return {

@@ -26,19 +26,21 @@
 <script>
 import {useActions, useGetters} from "@/helpers/store";
 import {computed, ref} from "vue";
+import {useStore} from "vuex";
 
 export default {
   name: "FlowSelector",
   props: ["parentId"],
   setup(props, context) {
+    const store = useStore();
     const {blocks, types} = useGetters(["blocks", "types"]);
     const {addFlow, addLoop} = useActions(["addFlow", "addLoop"]);
     const active = ref(0);
-    const selectedBlocks = computed(() => Object.values(blocks.value).filter(b => b.options.type === types.value[active.value]));
+    const selectedBlocks = computed(() => Object.values(blocks.value).filter(b => store.getters.typeBlock(b.id) === types.value[active.value]));
 
 
     const commit = (id) => {
-      addFlow({id, parentId: props.parentId, command: "rotate30"});
+      addFlow({id, parentId: props.parentId, command: "rotate_30"});
       context.emit("close");
     }
 

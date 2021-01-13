@@ -1,5 +1,5 @@
 <template>
-  <div class="block" :style="{ backgroundColor : colors[block.options.type]}">
+  <div class="block" :style="{ backgroundColor : colors[block.module]}">
     <div class="taskbar">
       <div class="close" @click="remove">x</div>
     </div>
@@ -11,6 +11,7 @@
 
     <Pin :id="id"/>
     <div class="options">
+      <Option :id="id" name="module" />
       <Option :id="id" :key="key" :name="key" v-for="(value, key) in block.options"/>
     </div>
 

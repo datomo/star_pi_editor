@@ -1,7 +1,7 @@
 <template>
   <div class="description">
     <h3>Name: {{ block.name }}</h3>
-    <h3>Type: {{ block.options.type }}</h3>
+    <h3>Type: {{ block.type }}</h3>
     <div class="input-group">
       <h3>Command: </h3>
       <input type="text" v-model="command">

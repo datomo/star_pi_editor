@@ -25,7 +25,6 @@ export default {
     const store = useStore();
     const {loops} = useGetters(["loops"])
     const parents = computed(() => store.getters.parents(props.id))
-    console.log(parents)
 
     const repeat = computed({
       get: () => loops.value[props.id].repeat,
