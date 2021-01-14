@@ -14,6 +14,7 @@ export default createStore({
             pins: [],
             name: "",
             module: "",
+            typeBlock, "",
             options: {}
         },
         relations: {
@@ -53,7 +54,8 @@ export default createStore({
                 block.options[key] = value[0];
             });
 
-            block.module = state.relations["trigger"][0]
+            block.typeBlock = state.relations["trigger"];
+            block.module = state.relations[state.typeBlock][0]
 
             state.blocks[id] = block;
             state.children[id] = [];
@@ -74,8 +76,11 @@ export default createStore({
         resetId(state) {
             state.id = 0;
         },
+        setType(state, {id, type}) {
+            state.blocks[id].type = type;
+        },
         setModule(state, {id, value}) {
-          state.blocks[id].module = value;
+            state.blocks[id].module = value;
         },
         setOption(state, {id, name, value}) {
             state.blocks[id].options[name] = value;
@@ -157,9 +162,14 @@ export default createStore({
                 await commit("addChild", {parentId, id: flowId});
             }
         },
-        setOption({commit}, {id, name, value}) {
+        setModule({commit,getters}, {id, value}) {
+            commit("setModule", {id, value});
+            const type = getters.type(value);
+            commit("setType", {id, type })
+        },
+        setOption({commit, dispatch}, {id, name, value}) {
             if (name === "module"){
-                commit("setModule", {id, value});
+                dispatch("setModule", {id, value});
             }else{
                 commit("setOption", {id, name, value});
             }
