@@ -14,7 +14,7 @@ export default createStore({
             pins: [],
             name: "",
             module: "",
-            typeBlock, "",
+            typeBlock: "",
             options: {}
         },
         relations: {
@@ -54,8 +54,8 @@ export default createStore({
                 block.options[key] = value[0];
             });
 
-            block.typeBlock = state.relations["trigger"];
-            block.module = state.relations[state.typeBlock][0]
+            block.typeBlock = "trigger";
+            block.module = state.relations[block.typeBlock][0]
 
             state.blocks[id] = block;
             state.children[id] = [];
@@ -262,6 +262,9 @@ export default createStore({
         },
         flowBlock: (state) => (id) => {
             return state.blocks[state.flowBlocks[id].id];
+        },
+        task: (state) => (id) => {
+            return state.flowBlocks[id];
         },
         getChildren: (state) => (id) => {
             return state.children[id].map((id) => state.blocks[id]);

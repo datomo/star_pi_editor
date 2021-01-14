@@ -5,7 +5,7 @@
   </div>
 
   <div class="pins" v-if="pinsVisible">
-    <div @click="toggle(pin)" class="pin" v-for="pin in 40" :key="pin"
+    <div @click="toggle(pin)" class="pin" v-for="pin in layout" :key="pin"
          :class="{'selected': pins.includes(pin), 'blocked': !(pin in normal_gpio)}">
       {{ translate_gpio(pin) }}
     </div>
@@ -21,6 +21,7 @@ import {gpio_2_normal, normal_2_gpio, normal_gpio} from "@/helpers/pin";
 export default {
   props: ["id"],
   setup(props) {
+    const layout = [...Array(20).keys()].map(k => (k+1)*2).concat([...Array(20).keys()].map(k => (k+1)*2-1))
     const store = useStore();
     const {removePin, addPin} = useActions(["removePin", "addPin"]);
     const pins = computed(() => store.getters.pins(props.id).map(pin => gpio_2_normal(pin)));
@@ -53,7 +54,7 @@ export default {
     }
 
     return {
-      pinsVisible, toggle, toggleAll, translate_gpio, normal_gpio, gpio_map, pins
+      pinsVisible, toggle, toggleAll, translate_gpio, normal_gpio, gpio_map, pins, layout
     }
   },
 }
@@ -73,7 +74,6 @@ export default {
   grid-template-columns: repeat(20, min-content);
   grid-template-rows: repeat(2, max-content);
   grid-gap: 0.2rem;
-  grid-auto-flow: column;
   text-align: center;
 }
 

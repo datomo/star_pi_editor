@@ -40,7 +40,7 @@ export default {
 
 
     const commit = (id) => {
-      addFlow({id, parentId: props.parentId, command: "rotate_30"});
+      addFlow({id, parentId: props.parentId, command: ""});
       context.emit("close");
     }
 
