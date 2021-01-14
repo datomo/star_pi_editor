@@ -1,10 +1,15 @@
 <template>
   <div class="description">
     <h3>Name: {{ block.name }}</h3>
-    <h3>Type: {{ block.type }}</h3>
+    <h3>Type: {{ block.typeBlock }}</h3>
     <div class="input-group">
       <h3>Command: </h3>
-      <input type="text" v-model="command">
+      <select name="commands" v-model="command">
+        <option v-for="(key, value) in commands[block.module]" :value="key" :key="key">{{ key }}</option>
+      </select>
+      <div class="input">
+        <input v-for="value in commands[block.module][command]" :key="value" type="text">
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +27,11 @@ export default {
     const store = useStore();
     const block = store.getters.flowBlock(props.id);
     const isRoot = store.getters.isRoot(props.id);
+    const commands = {
+      "motor": {"clockwise": ["steps", "speed"], "counter-clockwise": ["steps", "speed"]},
+      "scale": {"over":["amount"], "under":["amount"], "between":["amount", "amount"]},
+      "button": {"press":[], "doublePress":[]}
+    }
 
     const {colors, children, loops} = useGetters(["colors", "children", "loops"]);
     const {removeFlowBlock, setCommand} = useActions(["removeFlowBlock", "setCommand"]);
@@ -34,7 +44,7 @@ export default {
     const childrenVisible = ref(true);
 
     return {
-      block, colors, children, isRoot, childrenVisible, removeFlowBlock, command, loops
+      block, colors, children, isRoot, childrenVisible, removeFlowBlock, command, loops, commands
     }
   }
 }
