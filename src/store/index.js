@@ -77,7 +77,7 @@ export default createStore({
             state.id = 0;
         },
         setType(state, {id, type}) {
-            state.blocks[id].type = type;
+            state.blocks[id].typeBlock = type;
         },
         setModule(state, {id, value}) {
             state.blocks[id].module = value;

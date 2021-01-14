@@ -14,10 +14,8 @@
 </p>
 
 
-<div style="background-color:red; text-align:center; vertical-align: middle; border-radius: 4px; padding: 2px;">
-<p>This project, as well as this readme is under heavy development.</p>
-<p>Things are open to change drastically!</p>
-</div>
+
+**This project, as well as this readme is under heavy development.<br>Things are open to change drastically!**
 
 
 <!-- TABLE OF CONTENTS -->
@@ -31,6 +29,11 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+
+<p align="center">
+<img src="doc/BlockCreator.PNG" width="200">
+<img src="doc/TaskBuilder.PNG" width="200">
+</p>
 
 Star_Pi is a libary with the goal to allow non-technical people to access the possibilites of the raspberry pi.
 Starpi consist of two independent parts:
