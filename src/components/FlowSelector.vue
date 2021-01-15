@@ -59,13 +59,13 @@ export default {
 
 <style lang="scss" scoped>
 .flow-selector {
-  position: absolute;
+  position: fixed;
   z-index: 1;
   height: 100%;
   width: 100%;
   background-color: black;
   top: 0;
-  left: 0;
+  left: 0vw;
   display: grid;
 
   .popup {

@@ -125,6 +125,9 @@ export default createStore({
         },
         setRepeat(state, {id, repeat}) {
             state.loops[id].repeat = Number(repeat);
+        },
+        removeLoop(state, id) {
+            delete state.loops[id]
         }
     },
     actions: {
@@ -162,15 +165,15 @@ export default createStore({
                 await commit("addChild", {parentId, id: flowId});
             }
         },
-        setModule({commit,getters}, {id, value}) {
+        setModule({commit, getters}, {id, value}) {
             commit("setModule", {id, value});
             const type = getters.type(value);
-            commit("setType", {id, type })
+            commit("setType", {id, type})
         },
         setOption({commit, dispatch}, {id, name, value}) {
-            if (name === "module"){
+            if (name === "module") {
                 dispatch("setModule", {id, value});
-            }else{
+            } else {
                 commit("setOption", {id, name, value});
             }
         },
@@ -217,9 +220,7 @@ export default createStore({
                 commit("removeRoot", id);
             }
             if (id in state.children) {
-                console.log(state.children[id]);
                 for (const childId of state.children[id]) {
-                    console.log(childId);
                     await dispatch("removeFlowBlock", childId);
                 }
                 commit("removeParent", id);
@@ -231,8 +232,12 @@ export default createStore({
                 }
             })
 
-            commit("removeFlow", id);
-            console.log(state);
+            if (id in state.loops) {
+                await commit("removeLoop", id);
+            } else {
+                commit("removeFlow", id);
+            }
+
         },
         setCommand({commit}, payload) {
             commit("setCommand", payload);
