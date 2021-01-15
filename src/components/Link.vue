@@ -27,9 +27,21 @@ export default {
     const parents = computed(() => store.getters.parents(props.id))
 
     const repeat = computed({
-      get: () => loops.value[props.id].repeat,
+      get: () => {
+        // we have to change the infinite loop 0 to -1
+        let rep = loops.value[props.id].repeat
+        if( rep === -1){
+          rep = 0;
+        }
+        return rep;
+      },
       set: repeat => {
-        store.dispatch("setRepeat", {id: props.id, repeat});
+        // we have to change the infinite loop 0 to -1
+        let rep = repeat;
+        if(rep === 0){
+          rep = -1
+        }
+        store.dispatch("setRepeat", {id: props.id, repeat: rep});
       }
     })
 

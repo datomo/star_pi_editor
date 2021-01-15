@@ -109,7 +109,5 @@ David Lengweiler - [Homepage](https://lengweiler.com) - david@lengweiler.com
 
 
 
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
 
 

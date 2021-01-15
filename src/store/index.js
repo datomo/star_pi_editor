@@ -67,7 +67,7 @@ export default createStore({
             console.log(state.flowBlocks)
         },
         addLoop(state, flowId) {
-            state.loops[flowId] = {repeat: 0, target: flowId}
+            state.loops[flowId] = {repeat: -1, target: flowId}
             state.children[flowId] = [];
         },
         addChild(state, {parentId, id}) {
