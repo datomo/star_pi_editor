@@ -30,8 +30,8 @@ html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black;
-  color: #96c2e0;
+  background-color: #1F1B24;
+  color: #ffffff;
 }
 
 #app {
@@ -41,6 +41,36 @@ html {
   grid-template-areas: "nav" "view";
   grid-template-rows: max-content 1fr;
   position: relative;
+}
+
+.black {
+  background-color: #1F1B24;
+  color: #ffffff;
+}
+
+.red {
+  background-color: #78002e;
+}
+
+.blue {
+  background-color: #0d47a1;
+}
+
+.pink {
+  background-color: #9C528B;
+}
+
+.white {
+  background-color: #FFFDF7;
+}
+
+.yellow {
+  background-color: #ffb300;
+  color: black;
+}
+
+.title {
+  margin-bottom: 1rem;
 }
 
 

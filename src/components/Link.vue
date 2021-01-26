@@ -1,13 +1,13 @@
 <template>
-  <div class="link" :style="{ backgroundColor : 'pink'}">
+  <div class="link">
     <div class="option-group">
-      <h2>Target: </h2>
+      <p>Target: </p>
       <select name="cars" id="cars" v-model="target">
         <option v-for="parent in parents" :value="parent" :key="parent">{{ parent }}</option>
       </select>
     </div>
     <div class="option-group">
-      <h2>Repeat: </h2>
+      <p>Repeat: </p>
       <input width="48" class="input" v-model="repeat" placeholder="edit me">
     </div>
   </div>

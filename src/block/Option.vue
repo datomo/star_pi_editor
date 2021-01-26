@@ -46,6 +46,7 @@ export default {
 
 .selected {
   background-color: black;
+  color: white;
 }
 
 .value {

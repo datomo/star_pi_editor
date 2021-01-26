@@ -1,6 +1,6 @@
 <template>
   <div class="blocks">
-    <h1>Blocks</h1>
+    <h1 class="title">Blocks</h1>
     <div v-for="block in blocks" class="type" :key="block.id">
       <Description :id="block.id"></Description>
     </div>
@@ -37,6 +37,11 @@ export default {
   left: 50%;
   position: relative;
   transform: translateX(-50%);
+}
+
+.blocks {
+  padding: 2rem;
+  overflow: hidden;
 }
 
 

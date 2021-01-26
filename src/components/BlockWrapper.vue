@@ -2,7 +2,7 @@
   <div class="block-wrapper">
     <div class="block-arrow">
       <Arrow v-if="!isRoot"/>
-      <div class="block" :style="{ backgroundColor : colors[type]}">
+      <div class="block" :class="colors[type]">
         <h2 @click="removeFlowBlock(id)">x</h2>
         <div class="content">
           <div>
@@ -80,6 +80,7 @@ export default {
   grid-template-columns: max-content 1fr;
   margin-bottom: 1rem;
   align-items: start;
+  padding: 0.4rem;
 }
 
 .block {

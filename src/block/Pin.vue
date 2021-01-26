@@ -84,6 +84,7 @@ export default {
   width: 1.4rem;
   border-radius: 50%;
   cursor: pointer;
+  color: white;
   background-color: black;
 
   &.selected {

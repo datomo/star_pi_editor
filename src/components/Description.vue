@@ -1,5 +1,5 @@
 <template>
-  <div class="block" :style="{ backgroundColor : colors[block.module]}">
+  <div class="block" :class="colors[block.module]">
     <div class="taskbar">
       <div class="close" @click="remove">x</div>
     </div>
@@ -59,7 +59,7 @@ export default {
 }
 
 .children {
-  border: 2px solid black;
+  //border: 2px solid black;
 }
 
 .input-group {

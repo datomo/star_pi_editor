@@ -1,6 +1,6 @@
 <template>
   <div class="flow">
-    <h1>Flow</h1>
+    <h1 class="title">Flow</h1>
     <div class="flow-blocks">
 
       <BlockWrapper v-for="block in root" :id="block" @openPopup="openPopup" :key="block"/>
@@ -56,6 +56,7 @@ h1, h2, h3 {
 .flow {
   position: relative;
   height: 100%;
+  padding: 2rem;
 }
 
 </style>
